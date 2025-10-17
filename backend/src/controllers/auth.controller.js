@@ -83,10 +83,10 @@ export const login = async (req, res) => {
         if (!user) return res.status(400).json({ message: "Invalid Cedentials" })
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
-        if(!isPasswordValid) return res.status(400).json({message: "Invalid Credentials"})
+        if (!isPasswordValid) return res.status(400).json({ message: "Invalid Credentials" })
 
-        if(!email || !password){
-            return res.status(400).json({message: "All fields are required"})
+        if (!email || !password) {
+            return res.status(400).json({ message: "All fields are required" })
         }
 
         generateToken(user._id, res);
@@ -106,35 +106,35 @@ export const login = async (req, res) => {
 }
 
 
-export const logout = (_, res) => { 
-    res.cookie("jwt", "", {maxAge:0});
+export const logout = (_, res) => {
+    res.cookie("jwt", "", { maxAge: 0 });
     res.status(200).json({ message: "Logged out successfully" });
 }
 
 
-export const updateProfile = async (_, res) => { 
-   try {
-    const { profilePic } = req.body;
-    if (!profilePic) {
-        return res.status(400).json({ message: "Profile picture is required" });
-    }
-    const userId = req.user._id;
+export const updateProfile = async (_, res) => {
+    try {
+        const { profilePic } = req.body;
+        if (!profilePic) {
+            return res.status(400).json({ message: "Profile picture is required" });
+        }
+        const userId = req.user._id;
 
-    const uploadResult = await cloudinary.uploader.upload(profilePic);
+        const uploadResult = await cloudinary.uploader.upload(profilePic);
 
-    const updatedUser = await User.findByIdAndUpdate(
-        userId, 
-        { profilePic: uploadResult.secure_url,}, 
-        { new: true }
-);
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { profilePic: uploadResult.secure_url, },
+            { new: true }
+        );
 
-    res.status(200).json({
-        message: "Profile updated successfully",
-        user: updatedUser,
-    });
-   } catch (error) {
+        res.status(200).json({
+            message: "Profile updated successfully",
+            user: updatedUser,
+        });
+    } catch (error) {
         return res.status(500).json({
             message: "error updating profile",
         });
-   }
+    }
 }
