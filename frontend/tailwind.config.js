@@ -6,10 +6,22 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  theme: {
-    extend: {},
+ // tailwind.config.js
+
+theme: {
+  extend: {
+    keyframes: {
+      border: {
+        to: { '--border-angle': '360deg' },
+      },
+    },
+    animation: {
+      border: 'border 4s linear infinite',
+    },
   },
-  plugins: [
-    daisyui
-  ],
+},
+plugins: [
+  daisyui
+],
 }
+
