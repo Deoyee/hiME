@@ -40,3 +40,27 @@ const aj = arcjet({
 
 
 export default aj;
+
+
+// import { ENV } from './env.js';
+// import arcjet, { shield, detectBot, slidingWindow } from '@arcjet/node';
+
+// const aj = arcjet({
+//   key: ENV.ARCJET_KEY,
+//   rules: [
+//     shield({ mode: "DRY_RUN" }), // Changed to DRY_RUN
+//     detectBot({
+//       mode: "DRY_RUN", // Changed to DRY_RUN - will log but NOT block
+//       allow: [
+//         "CATEGORY:SEARCH_ENGINE",
+//       ],
+//     }),
+//     slidingWindow({
+//         mode: "DRY_RUN", // Changed to DRY_RUN
+//         interval: 60,
+//         max: 100,
+//     })
+//   ],
+// });
+
+// export default aj;
