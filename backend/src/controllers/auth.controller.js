@@ -112,29 +112,54 @@ export const logout = (_, res) => {
 }
 
 
-export const updateProfile = async (_, res) => { 
-   try {
+// export const updateProfile = async (_, res) => { 
+//    try {
+//     const { profilePic } = req.body;
+//     if (!profilePic) {
+//         return res.status(400).json({ message: "Profile picture is required" });
+//     }
+//     const userId = req.user._id;
+
+//     const uploadResult = await cloudinary.uploader.upload(profilePic);
+
+//     const updatedUser = await User.findByIdAndUpdate(
+//         userId, 
+//         { profilePic: uploadResult.secure_url,}, 
+//         { new: true }
+// );
+
+//     res.status(200).json({
+//         message: "Profile updated successfully",
+//         user: updatedUser,
+//     });
+//    } catch (error) {
+//         return res.status(500).json({
+//             message: "error updating profile",
+//         });
+//    }
+// }
+
+
+export const updateProfile = async (req, res) => { 
+  try {
     const { profilePic } = req.body;
     if (!profilePic) {
-        return res.status(400).json({ message: "Profile picture is required" });
+      return res.status(400).json({ message: "Profile picture is required" });
     }
-    const userId = req.user._id;
 
+    const userId = req.user._id;
     const uploadResult = await cloudinary.uploader.upload(profilePic);
 
     const updatedUser = await User.findByIdAndUpdate(
-        userId, 
-        { profilePic: uploadResult.secure_url,}, 
-        { new: true }
-);
+      userId, 
+      { profilePic: uploadResult.secure_url }, 
+      { new: true }
+    ).select("-password");
 
-    res.status(200).json({
-        message: "Profile updated successfully",
-        user: updatedUser,
-    });
-   } catch (error) {
-        return res.status(500).json({
-            message: "error updating profile",
-        });
-   }
-}
+    res.status(200).json(updatedUser);
+
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    return res.status(500).json({ message: "Error updating profile" });
+  }
+};
